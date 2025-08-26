@@ -1,0 +1,19 @@
+{
+  "name": "Proteins_DTASelect",
+  "namespace": "com.example",
+  "type": "record",
+  "version": "1",
+  "doc": "data structure to store protein groups for DTASelect; FDR controlled",
+  "fields": [
+    {
+      "name": "protein_group_id",
+      "type": "int",
+      "doc": "monotonically increasing integer id; to be used as foreign key in the peptide file."
+    },
+    {
+      "name": "protein_group_name",
+      "type": "string",
+      "doc": "protein group name or family name; where protein group only consists of single member, it would equal protein_ID"
+    }
+  ]
+}

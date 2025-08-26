@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'io.quarkus'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+        vendor = JvmVendorSpec.matching("Oracle")
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation enforcedPlatform(quarkusPlatformGroupId + ':' + quarkusPlatformArtifactId + ':' + quarkusPlatformVersion)
+    implementation 'io.quarkus:quarkus-arc'
+
+    implementation('org.apache.parquet:parquet-avro:1.15.2')
+    implementation("org.apache.hadoop:hadoop-client:3.4.1") {
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+        exclude group: 'log4j', module: 'log4j'
+    }
+
+    testImplementation("io.quarkus:quarkus-junit5")
+}
+
+test {
+    systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.example.QuarkusParquetApplication'
+    }
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.compilerArgs << '-parameters'
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
+}

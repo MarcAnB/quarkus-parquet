@@ -2,6 +2,7 @@ package com.example;
 
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.apache.parquet.avro.AvroParquetWriter;
 import org.apache.parquet.hadoop.ParquetWriter;
 import org.apache.parquet.hadoop.metadata.CompressionCodecName;
@@ -11,6 +12,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 @QuarkusMain
+@RegisterForReflection(targets = {
+        org.apache.parquet.hadoop.codec.SnappyCodec.class,
+        org.apache.parquet.avro.SpecificDataSupplier.class
+})
 public class QuarkusParquetApplication implements QuarkusApplication {
 
     @Override

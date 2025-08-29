@@ -14,14 +14,24 @@ java {
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://bruker-" + (System.env.ACCOUNT_ID ?: "460648541852") + ".d.codeartifact.eu-central-1.amazonaws.com/maven/bruker-artifacts/"
+        credentials {
+            username "aws"
+            password System.env.CODEARTIFACT_AUTH_TOKEN
+        }
+    }
 }
 
 dependencies {
     implementation enforcedPlatform(quarkusPlatformGroupId + ':' + quarkusPlatformArtifactId + ':' + quarkusPlatformVersion)
     implementation 'io.quarkus:quarkus-arc'
 
+    implementation 'org.jboss.logmanager:log4j2-jboss-logmanager' // needed for avro dependencies
+    implementation "com.bruker.snappy:quarkus-snappy-extension:0.4.12" // needed to write parquet
+
     implementation('org.apache.parquet:parquet-avro:1.15.2')
-    implementation("org.apache.hadoop:hadoop-client:3.4.1") {
+    implementation("org.apache.hadoop:hadoop-client:3.4.0") { // updating this one can cause issue on building native
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
         exclude group: 'log4j', module: 'log4j'
     }
